@@ -1,0 +1,19 @@
+<script src="http://ec2-46-137-129-147.eu-west-1.compute.amazonaws.com:8088/socket.io/socket.io.js"></script>
+<script>
+	var socket = io.connect('http://ec2-46-137-129-147.eu-west-1.compute.amazonaws.com:8088/');
+	socket.on('connect', function () {
+		socket.send({key: socket.transport.sessionid});
+		socket.emit('remote', 'user01');
+		console.log('remote control connected');
+	});
+
+	socket.on('reconnecting', function () {
+		console.log('Reconnecting to the server');
+	});
+
+	socket.on('error', function (e) {
+		console.log(e, "An error occured");
+	});
+	
+
+</script>
