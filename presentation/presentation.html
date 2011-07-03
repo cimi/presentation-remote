@@ -1,0 +1,347 @@
+﻿<!DOCTYPE html>
+
+<!--
+  Google HTML5 slide template
+
+  Authors: Luke Mahé (code)
+           Marcin Wichary (code and design)
+           
+           Dominic Mazzoni (browser compatibility)
+           Charles Chen (ChromeVox support)
+
+  URL: http://code.google.com/p/html5slides/
+-->
+
+<html>
+  <head>
+    <title>Presentation</title>
+
+    <meta charset='utf-8'>
+    <script
+      src='http://html5slides.googlecode.com/svn/trunk/slides.js'></script>
+    <!-- remote controllable -->
+    <script src="http://ec2-46-137-129-147.eu-west-1.compute.amazonaws.com:8088/socket.io/socket.io.js"></script>
+    <script src='http://code.jquery.com/jquery-1.6.2.min.js'></script>
+    <script src='presentation.js'></script>
+  </head>
+  
+  <style>
+    /* Your individual styles here, or just use inline styles if that’s
+       what you want. */
+	   
+    #poli .slides.template-default article.biglogo {
+		background: white url(img/cs-logo-large.png) 50% 50% no-repeat;
+	}
+	
+    #poli .slides.template-default > article:not(.nobackground):not(.biglogo) {
+		background: url(img/cs-logo.png) 775px 575px no-repeat;
+		background-color: white;
+	}
+    
+  </style>
+
+  <body id="poli" style='display: none'>
+
+    <section class='slides layout-regular template-default'>
+      
+      <!-- Your slides (<article>s) go here. Delete or comment out the
+           slides below. -->
+
+      <article class='biglogo'>
+      </article>
+
+      <article>
+        <h1>
+          Digua: Building a Web
+          <br>
+          Compressor &amp; Obfuscator
+        </h1>
+        <p>
+          <strong>Author:</strong> Eng. Alexandru Ciminian
+          <br>
+          <strong>Supervisor:</strong> S.L. Dr. Eng. Ciprian Dobre
+		  <br>
+		  July 4th, 2011
+        </p>
+      </article>
+	  
+      <article>
+        <h3>
+          Presentation Outline
+        </h3>
+        <ul>
+          <li>
+            <strong>Introduction</strong>: speed as a feature, techiques to improve performance
+          </li>
+          <li>
+            <strong>Content</strong>: similar projects, implementation details, testing and benchmarks
+          </li>
+          <li>
+            <strong>Conclusion</strong>: interpretation of results, future work
+          </li>
+        </ul>
+      </article>      
+
+	  <article>
+        <h3>
+          Speed as a Feature
+        </h3>
+        <ul class="build">
+          <li>
+			Speed improves user experience.
+          </li>
+          <li>
+            Smaller and faster websites lead to reduced costs, especially in the mobile space.
+          </li>
+          <li>
+            It is taken into account by Google in SR rankings!
+          </li>
+		  <li>
+            Fact: on average 80% time spent downloading page resources, 20% spent on the server rendering the page
+          </li>
+        </ul>
+      </article>
+	  
+	  <article class='smaller'>
+		<q>
+		Research on a wide variety of hypertext systems has shown that <strong>users need response times of less than one second</strong>
+		when moving from one page to another if they are to navigate freely through an information space.
+		</q>
+        <div class='author'>
+          Jakob Nielsen, <br />usability expert
+        </div>
+      </article>
+	  
+      <article class='smaller'>
+        <q>
+			The page with 10 results took .4 seconds to generate. The page with 30 results took .9 seconds. 
+			<strong>Half a second delay caused a 20% drop in traffic. Half a second delay killed user satisfaction.</strong>
+		</q>
+        <div class='author'>
+          Greg Linden, <br /> on A/B testing for Google
+        </div>
+      </article>
+      
+	  <article>
+		<h3>Website Performance Techniques (HTTP)</h3>
+		<ul class="build">
+			<li>
+				<strong>Reduce HTTP requests</strong>
+			</li>
+			<li>
+				<strong>Use HTTP compression:</strong> gzip, deflate
+			</li>
+			<li>
+				<strong>Use HTTP caching: </strong> If-Modified Since, ETag, Expires, Max-age
+			</li>
+			<li>Example:
+			<section><pre>Accept-Encoding: gzip,deflate</pre><pre>Vary: Accept-Encoding
+Content-Encoding: gzip</pre></section>
+			</li>
+		</ul>
+      </article>
+
+      <article>
+        <h3>
+          Website Performance Techniques (other):
+        </h3>
+		<ul class="build">
+        <li>Use a CDN</li>
+        <li>Reduce DNS lookups</li>
+		<li>Avoid redirects</li>
+		<li>Cache AJAX</li>
+		<li>Put scripts at the bottom of the page</li>
+		<li>Put stylesheets at the top of the page</li>
+		<li>Make CSS and JavaScript external resources</li>
+		<li><strong>Minify them!</strong></li>
+      </article>
+
+      <article>
+        <h3>
+          Digua: web site compressor and obfuscator
+        </h3>
+        <div class="build">
+          <p style="margin-top: 40px;">
+		     Digua is a <strong>Java library</strong> that can be used to <strong>minify websites</strong> and <strong>obfuscate code</strong>.
+			 It is a <strong>versatile solution</strong> that can be used for <strong>various types</strong> of input.
+		  </p>
+          <p>Similar projects:</p>
+		  <ul>
+			<li>YUI Compressor</li>
+			<li>Google Closure Compiler</li>
+			<li>Packer</li>
+			<li>Dojo ShrinkSafe</li>
+			<li>CSSMin</li>
+			<li>JSMin</li>
+		  </ul>
+        </div>
+      </article>
+
+      <article>
+        <h3>
+          Digua: architecture overview
+        </h3>
+        <p>
+          <img class='centered' style='height: 500px' src='img/architecture.png'>
+        </p>
+      </article>
+
+
+      <article>
+        <h3>
+          Digua: architectural components
+        </h3>
+		<div class="build">
+			<p style="margin-top: 40px;"><span class='red'>The I/O classes</span> are flexible and genericized, they make Digua potentially usable in a variety of contexts.</p>
+			<p><span class='blue'>The context</span> holds necessary information for processing: I/O sources, translation map, links to parent contexts.</p>
+			<p><span class='yellow'>The lexers and parsers</span> are automatically generated from ANTLR grammars and hold the actual intelligence behind processing the sources.</p>
+			<p><span class='green'>The processors</span> coordinate the minification process. They make decisions based on the context and delegate lexing and parsing to the appropriate 
+			classes. Also, they hold specific utility functions for minification.</p>
+		</div>
+      </article>
+      
+      <article class='smaller'>
+        <h3>
+          Sample minification rule
+        </h3>
+        
+        <section>
+        <pre>
+@parser : : members {
+	private CSS21Processor getCSSProcessor ( ) {
+		return ( CSS21Processor ) getProcessor ( ) ;
+	}
+}
+</pre>
+        </section>
+        <section>
+        <pre>
+term
+  : unaryOperator?
+  ( NUMBER | PERCENTAGE | LENGTH | EMS | EXS | ANGLE | TIME | FREQ )
+  | possibleColor=IDENT  
+  {
+    $possibleColor.setText(getCSSProcessor().minimizeColor($possibleColor.text));
+  }
+  | URI
+  | hexColor
+;
+	
+hexColor
+  : hexColorName=HASH
+  {
+    $hexColorName.setText(getCSSProcessor().minimizeColor($hexColorName.text));
+  }		
+  ;
+</pre>
+        </section>		
+      </article>
+      
+      <article class="smaller">
+        <h3>
+          Benchmarking methodology
+        </h3>
+		<section>
+        <pre>
+{
+  "logfile" : "benchmark.log",
+  "outfile" : "benchmark.out",
+  "minifiers": {
+    "digua" : {
+      "name" : "Digua",
+      "version" : "0.2",
+      "executable" : "digua.jar",
+      "arguments" : "-s {src} -d {dst} -n"
+    },
+    [...]
+  },
+  "benchmarks": {
+    "prototype" : {
+      "name" : "Minification for Prototype.js",
+      "minifiers" : [ "yui", "closure", "packer", "jsmin", "dojo" ],
+      "src" : "dist/prototype.js",
+      "dst" : "dist/{library}-prototype.min.js"
+    },
+    [...]
+  },
+  "validation" : {
+    "prototype" : {
+      "executable": "cd tests/prototype/; rake test BROWSERS=firefox; pkill firefox; cd ../..;"
+    }
+  }
+}
+</pre>
+</section>
+      </article>
+      <article>
+        <h3>
+          Test results - minifying jQuery
+        </h3>
+        <p>
+          <img class='centered' style='height: 400px; margin-top: 80px;' src='img/jquery.png'>
+        </p>
+      </article>
+	  <article>
+        <h3>
+          Test results - minifying a webpage and all its resources
+        </h3>
+        <div style="margin: 80px 0 0 60px;">
+          <img style="float:left;" src='img/webpage-1.png'>
+		  <img style="float:left; margin: 0 0 0 60px;" src='img/webpage-2.png'>
+        </div>
+      </article>
+	  <article>
+        <h3>
+          Test results - minifying prototype.js
+        </h3>
+        <p>
+          <img class='centered' style='height: 400px; margin-top: 80px;' src='img/prototype.png'>
+        </p>
+		<p>All validations passed!</p>
+      </article>
+	  
+	  <article>
+        <h3>
+          Conclusions
+        </h3>
+        <ul class="build">
+          <li>
+			Extensible architecture - easy to add new features!
+          </li>
+          <li>
+            Benchmarking will be valuable in the long run.
+          </li>
+          <li>
+            Overall performance makes it a good choice as a minification tool.
+          </li>
+		  <li>
+            Open source nature of the project - attract new contributors.
+          </li>
+		  <li>
+            <strong>Thank You:</strong> my team leader, Adrian Ber and my supervisor Ciprian Dobre!
+          </li>
+        </ul>
+      </article>
+	  <article>
+        <h3>
+          Future Work
+        </h3>
+        <ul class="build">
+          <li>
+			Implementing external configrability through property files or comments.
+          </li>
+          <li>
+            Integration with other resource build tools (CSS preprocessors, JS compilers).
+          </li>
+          <li>
+            Performance enhancements.
+          </li>
+		  <li>
+            Adding a Graphical User Interface to the project.
+          </li>
+        </ul>
+      </article>
+	  <article class='biglogo'>
+      </article>
+  </body>
+</html>

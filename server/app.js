@@ -15,17 +15,18 @@ io.sockets.on('connection', function(socket) {
     socket.on('remote', function (userId) {
         // remote control has connected to the server
 	// return presentations that accept the userId
+	console.log('remote control for user: ' + userId + ' has connected');
 	socket.send(presentations[userId]);
     });
 
     socket.on('prev', function (presentationId) {
     	// previous slide was requested on the remote
-	io.sockets.socket(presentationId).emit('prev');
+	io.sockets.emit('prev');
     });
 
     socket.on('next', function (presentationId) {
       // next slide was requested on the remote, send the request to the presentation
-      io.sockets.socket(presentationId).emit('next');
+      io.sockets.emit('next');
     });
 
 

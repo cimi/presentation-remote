@@ -1,8 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
 <script src="http://ec2-46-137-129-147.eu-west-1.compute.amazonaws.com:8088/socket.io/socket.io.js"></script>
+
 <script>
 	var socket = io.connect('http://ec2-46-137-129-147.eu-west-1.compute.amazonaws.com:8088/');
 	socket.on('connect', function () {
-		socket.send({key: socket.transport.sessionid});
 		socket.emit('remote', 'user01');
 		console.log('remote control connected');
 	});
@@ -14,6 +17,22 @@
 	socket.on('error', function (e) {
 		console.log(e, "An error occured");
 	});
-	
+	window.onload = function () {
+		var next = document.getElementById('next');
+		var prev = document.getElementById('prev');
 
+		next.addEventListener('click', function () {
+			socket.emit('next');
+		}, false);
+
+		prev.addEventListener('click', function () {
+			socket.emit('prev');
+		}, false);
+	}
 </script>
+</head>
+<body>
+	<a id="next" href="#">Next</a>
+	<a id="prev" href="#">Prev</a>
+</body>
+</html>
