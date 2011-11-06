@@ -1,10 +1,25 @@
+var express = require('express'),
+    sio = require('socket.io'),
+    app = express.createServer(express.logger());
+
+app.configure(function () {
+    app.use(express.cookieParser());
+    app.set('view engine', 'jade');
+});
+app.listen(process.env.PORT || 3000);
+
+app.get('/', function (req, res) {
+    res.render('index', { layout: false });
+});
+
+var io = sio.listen(app);
 var presentations = {};
-var port = process.env.PORT * 1 || 3000;
-var io = require('socket.io').listen(port);
+
 io.configure(function () { 
     io.set("transports", ["xhr-polling"]); 
     io.set("polling duration", 10); 
 });
+
 // start server
 io.sockets.on('connection', function(socket) {
     socket.on('presentation', function (userId, presentationId) {
