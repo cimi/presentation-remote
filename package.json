@@ -2,7 +2,7 @@
   "name": "node-example",
   "version": "0.0.1",
   "dependencies": {
-    "jade" : "0.16.4",
+    "express" : "2.2.0",
     "socket.io" : "0.8.5"
   }
 }
