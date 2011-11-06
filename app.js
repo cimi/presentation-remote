@@ -1,5 +1,5 @@
 var presentations = {};
-var port = process.ENV.port || 3000;
+var port = process.env.PORT || 3000;
 var io = require('socket.io').listen(port);
 io.configure(function () { 
     io.set("transports", ["xhr-polling"]); 
