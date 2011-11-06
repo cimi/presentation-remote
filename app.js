@@ -1,11 +1,11 @@
 var presentations = {};
+var io = require('socket.io').listen(80);
 io.configure(function () { 
     io.set("transports", ["xhr-polling"]); 
     io.set("polling duration", 10); 
 });
-var io = require('socket.io');
-io.sockets.on('connection', function(socket) {
 
+io.sockets.on('connection', function(socket) {
     socket.on('presentation', function (userId, presentationId) {
         // presentation has connected to the server
         presentations[userId] = presentationId;
