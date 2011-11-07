@@ -1,5 +1,13 @@
 !!! 5
 html(lang="en")
   head
+    script(type="text/javascript", src="http://code.jquery.com/jquery-1.6.4.min.js")
+    script(type="text/javascript", src="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.js")
+    link(rel="stylesheet", href="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.css") 
   body
     h1 Hello, Jade
+    fieldset(class="ui-grid-a")
+      div(class="ui-block-a")
+        button(id="prev", data-icon="arrow-l") previous slide
+      div(class="ui-block-b")
+        button(id="next", data-icon="arrow-r", data-iconpos="right") next slide
