@@ -1,13 +1,21 @@
 !!! 5
 html(lang="en")
   head
+    link(rel="stylesheet", href="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.css") 
     script(type="text/javascript", src="http://code.jquery.com/jquery-1.6.4.min.js")
     script(type="text/javascript", src="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.js")
-    link(rel="stylesheet", href="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.css") 
+    script(type="text/javascript", src="/socket.io/socket.io.js")
+    script(type="text/javascript", src="/res/remote.js")
   body
-    h1 Hello, Jade
-    fieldset(class="ui-grid-a")
-      div(class="ui-block-a")
-        button(id="prev", data-icon="arrow-l") previous slide
-      div(class="ui-block-b")
-        button(id="next", data-icon="arrow-r", data-iconpos="right") next slide
+    div(data-role="page")
+      div(data-role="header")
+        h1 Hello, Jade
+      div(data-role="content")
+        fieldset(class="ui-grid-a")
+          div(class="ui-block-a")
+            button(id="prev", data-icon="arrow-l") previous slide
+          div(class="ui-block-b")
+            button(id="next", data-icon="arrow-r", data-iconpos="right") next slide
+          h1 Slide Notes
+      div(data-role="footer", data-position="fixed")
+        h4 Footer
