@@ -4,6 +4,7 @@ var express = require('express'),
 
 app.configure(function () {
     app.use(express.cookieParser());
+    app.use('/res', express.static(__dirname + '/res'));
     app.set('view engine', 'jade');
 });
 app.listen(process.env.PORT || 3000);
@@ -15,12 +16,13 @@ app.get('/', function (req, res) {
 var io = sio.listen(app);
 var presentations = {};
 
+// use long polling because heroku does not support web sockets
 io.configure(function () { 
     io.set("transports", ["xhr-polling"]); 
     io.set("polling duration", 10); 
 });
 
-// start server
+// start socket server
 io.sockets.on('connection', function(socket) {
     socket.on('presentation', function (userId, presentationId) {
         // presentation has connected to the server
