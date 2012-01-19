@@ -1,19 +1,21 @@
-var socket = io.connect('http://ec2-46-137-129-147.eu-west-1.compute.amazonaws.com:8088/');
+var socket = io.connect(SOCKET_IO_HOST);
 
-var getVars = {};
-(function(){
+var requestParameters = {};
+// extracts all parameters from the query string of this script
+// used to get an eventual userId
+(function () {
     var scripts, currentScript, queryString;
 
     scripts = document.getElementsByTagName('script');
     currentScript = scripts[ scripts.length - 1 ];
     queryString = currentScript.getAttribute('src').replace(/[^\?]*/,'').split('&');
-    for(var i=0;i<queryString.length;i++){
-        var keVal = queryString[i].split('=');
-        getVars[ keyVal[0] ] = keyVal[1];
+    for(var i=0; i < queryString.length; i++) {
+        var keyVal = queryString[i].split('=');
+        requestParameters[ keyVal[0] ] = keyVal[1];
     }
 }());
 
-var presentationId = getVars['presentationId'] || 'anonymous';
+var presentationId = requestParameters['presentationId'] || 'anonymous';
 
 socket.on('connect', function () {
 	socket.emit('presentation', presentationId);

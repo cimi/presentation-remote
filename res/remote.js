@@ -1,4 +1,4 @@
-var socket = io.connect('http://fierce-dawn-8677.herokuapp.com/');
+var socket = io.connect(SOCKET_IO_HOST);
 socket.on('connect', function () {
     socket.emit('remote', 'user01');
     console.log('remote control connected');

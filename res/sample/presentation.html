@@ -17,12 +17,15 @@
     <title>Presentation</title>
 
     <meta charset='utf-8'>
+    <script>
+        var SOCKET_IO_HOST = 'http://fierce-dawn-8677.herokuapp.com/';
+    </script>
     <script
       src='http://html5slides.googlecode.com/svn/trunk/slides.js'></script>
     <!-- remote controllable -->
-    <script src="http://ec2-46-137-129-147.eu-west-1.compute.amazonaws.com:8088/socket.io/socket.io.js"></script>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
     <script src='http://code.jquery.com/jquery-1.6.2.min.js'></script>
-    <script src='presentation.js?id=42'></script>
+    <script src='http://localhost:3000/res/presentation.js?id=42'></script>
   </head>
   
   <style>
