@@ -13,8 +13,10 @@
         }
     }());
 
-    var uid = requestParameters['uid'] || 'anonymous';
-    var socket = io.connect(requestParameters['sio-uri'] || 'http://fierce-dawn-8677.herokuapp.com:80/');
+    var uid = requestParameters['uid'] || 'anonymous',
+        DEFAULT_SIO_SERVER = 'http://fierce-dawn.herokuapp.com:80/',
+        sioUri = requestParameters['sio-uri'] || DEFAULT_SIO_SERVER;
+    var socket = io.connect((sioUri !== 'localhost') ? sioUri : undefined);
 
     socket.on('connect', function () {
         socket.emit('n', uid);
