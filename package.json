@@ -4,6 +4,7 @@
   "dependencies": {
     "express" : "2.2.0",
     "jade" : "0.15.4",
-    "socket.io" : "0.8.5"
+    "socket.io" : "0.8.5",
+    "everyauth" : "0.2.29"
   }
 }

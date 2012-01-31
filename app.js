@@ -1,7 +1,9 @@
+// set up dependencies
 var express = require('express'),
     sio = require('socket.io'),
     app = express.createServer(express.logger());
 
+// general configuration for the application
 app.configure(function () {
     app.use(express.cookieParser());
     app.use('/res', express.static(__dirname + '/res'));
@@ -9,10 +11,12 @@ app.configure(function () {
 });
 app.listen(process.env.PORT || 3000);
 
+// set up index page to serve the rendered remote
 app.get('/', function (req, res) {
     res.render('index', { layout: false });
 });
 
+// start socket.io server
 var io = sio.listen(app);
 var presentations = {};
 
