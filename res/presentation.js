@@ -14,8 +14,7 @@
     }());
 
     var uid = requestParameters['uid'] || 'anonymous';
-    //var sioUri = (requestParameters['host'] ? (requestParameters['ssl'] ? 'https://' : 'http://') + requestParameters['host'] : undefined);
-    var socket = io.connect(requestParameters['sio-host']);
+    var socket = io.connect(requestParameters['sio-uri'] || 'http://fierce-dawn-8677.herokuapp.com:80/');
 
     socket.on('connect', function () {
         socket.emit('n', uid);
