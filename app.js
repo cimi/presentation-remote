@@ -1,19 +1,41 @@
 // set up dependencies
 var express = require('express'),
     sio = require('socket.io'),
-    app = express.createServer(express.logger());
+    everyauth = require('everyauth'),
+    fs = require('fs'),
+    authconfig = require('./config.auth.js'),
+    logfile = fs.createWriteStream('./app.log', {flags : 'a'});
 
+// configure authentication with third parties
+var app = express.createServer(express.logger({ stream : logfile }), everyauth.middleware());
+everyauth.debug = true;
+everyauth.facebook
+        .appId(authconfig.fb.appId)
+        .appSecret(authconfig.fb.appsecret)
+        .findOrCreateUser( function (session, accessToken, accessTokenExtra, fbUserMetadata) {
+            express.logger('dev');
+            express.logger(fbUserMetadata);
+        })
+        .redirectPath('/login');
+        
 // general configuration for the application
 app.configure(function () {
     app.use(express.cookieParser());
+    app.use(express.session({ secret: 'waddafuckisthis'}));
     app.use('/res', express.static(__dirname + '/res'));
     app.set('view engine', 'jade');
 });
+
+everyauth.helpExpress(app);
 app.listen(process.env.PORT || 3000);
 
 // set up index page to serve the rendered remote
 app.get('/', function (req, res) {
     res.render('index', { layout: false });
+});
+
+app.get('/login', function (req, res) {
+    res.render('login', { layout: false });
 });
 
 // start socket.io server
